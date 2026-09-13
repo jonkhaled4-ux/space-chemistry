@@ -12,7 +12,7 @@
             --neon-red: #ff0055;
             --neon-green: #00ff66;
             --neon-gold: #ffaa00;
-            --panel-bg: rgba(10, 16, 30, 0.85);
+            --panel-bg: rgba(10, 16, 30, 0.88);
             --border-glow: rgba(0, 243, 255, 0.3);
         }
 
@@ -22,6 +22,7 @@
             padding: 0;
             user-select: none;
             -webkit-user-select: none;
+            -webkit-touch-callout: none;
         }
 
         body {
@@ -34,6 +35,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            position: fixed;
+            inset: 0;
         }
 
         #viewport {
@@ -48,20 +51,22 @@
             position: absolute;
             inset: 0;
             z-index: 999;
-            background: rgba(3, 7, 18, 0.95);
+            background: rgba(3, 7, 18, 0.96);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             gap: 20px;
+            padding: 20px;
+            text-align: center;
         }
 
         .btn-start-exp {
             background: var(--neon-red);
             color: #fff;
             border: none;
-            padding: 20px 40px;
-            font-size: 1.5rem;
+            padding: 18px 38px;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
             font-family: 'Tajawal', sans-serif;
             font-weight: bold;
             border-radius: 50px;
@@ -82,9 +87,9 @@
 
         .global-controls {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            right: 20px;
+            top: 15px;
+            left: 15px;
+            right: 15px;
             z-index: 200;
             display: flex;
             justify-content: space-between;
@@ -95,12 +100,12 @@
         .slide-indicator {
             font-family: 'Orbitron', sans-serif;
             color: var(--neon-blue);
-            background: rgba(0, 0, 0, 0.6);
-            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.65);
+            padding: 6px 14px;
             border-radius: 20px;
             border: 1px solid var(--border-glow);
             letter-spacing: 2px;
-            font-size: 0.9rem;
+            font-size: clamp(0.75rem, 2vw, 0.9rem);
         }
 
         .btn-next-step {
@@ -108,8 +113,8 @@
             background: rgba(0, 243, 255, 0.15);
             border: 1px solid var(--neon-blue);
             color: #fff;
-            padding: 10px 22px;
-            font-size: 1rem;
+            padding: 8px 18px;
+            font-size: clamp(0.9rem, 2vw, 1rem);
             font-family: 'Tajawal', sans-serif;
             font-weight: bold;
             border-radius: 30px;
@@ -150,7 +155,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
+            padding: 1.5rem;
             background-size: cover;
             background-position: center;
         }
@@ -194,27 +199,28 @@
             z-index: 5;
             display: flex;
             justify-content: space-between;
-            padding: 90px 40px 40px 40px;
+            align-items: flex-start;
+            padding: 75px 25px 25px 25px;
             box-sizing: border-box;
             font-family: 'Orbitron', monospace;
-            font-size: 0.85rem;
+            font-size: clamp(0.7rem, 1.5vw, 0.85rem);
             color: var(--neon-blue);
         }
 
         .hud-box {
-            background: rgba(3, 7, 18, 0.7);
+            background: rgba(3, 7, 18, 0.75);
             border: 1px solid var(--border-glow);
-            padding: 15px 20px;
+            padding: 12px 16px;
             border-radius: 8px;
             backdrop-filter: blur(5px);
-            line-height: 1.8;
-            min-width: 240px;
+            line-height: 1.7;
+            max-width: 260px;
         }
 
         .hud-box h4 {
             color: #fff;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
             border-bottom: 1px solid rgba(0, 243, 255, 0.3);
             padding-bottom: 4px;
         }
@@ -223,26 +229,27 @@
             background: rgba(255, 0, 85, 0.15);
             border: 2px solid var(--neon-red);
             box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
-            padding: 30px 50px;
+            padding: 25px 35px;
             border-radius: 12px;
             text-align: center;
             animation: border-pulse 0.8s infinite alternate;
+            max-width: 90%;
         }
 
         .flash-text {
             font-family: 'Orbitron', sans-serif;
             color: var(--neon-red);
-            font-size: 2.8rem;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
             font-weight: 900;
-            letter-spacing: 3px;
-            margin-bottom: 10px;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
             animation: text-flash 0.5s infinite alternate;
         }
 
         .flash-subtext {
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             color: #fff;
-            font-size: 1.8rem;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
             font-family: 'Orbitron';
             font-weight: bold;
             animation: text-flash 0.5s infinite alternate;
@@ -276,11 +283,10 @@
             to { box-shadow: 0 0 40px rgba(255, 0, 85, 0.9); border-color: var(--neon-red); }
         }
 
-        /* حاوية السحب والإفطار المتوافقة مع الأيباد */
         .drag-container {
             display: flex;
-            gap: 12px;
-            margin-top: 25px;
+            gap: 10px;
+            margin-top: 20px;
             flex-wrap: wrap;
             justify-content: center;
             max-width: 900px;
@@ -288,27 +294,27 @@
 
         .drop-zones {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 8px;
+            margin-top: 15px;
             direction: ltr;
             flex-wrap: wrap;
             justify-content: center;
         }
 
         .drop-slot {
-            width: 140px;
-            height: 55px;
+            width: clamp(110px, 16vw, 140px);
+            height: 50px;
             border: 2px dashed var(--neon-blue);
             background: rgba(0, 243, 255, 0.05);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
+            font-size: clamp(0.7rem, 1.5vw, 0.85rem);
             color: rgba(255, 255, 255, 0.6);
             transition: all 0.3s;
             text-align: center;
-            padding: 5px;
+            padding: 4px;
         }
 
         .drop-slot.hovered {
@@ -318,14 +324,14 @@
         }
 
         .draggable-item {
-            padding: 12px 18px;
+            padding: 10px 16px;
             background: rgba(15, 23, 42, 0.95);
             border: 1px solid var(--neon-blue);
             box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 1rem;
+            font-size: clamp(0.85rem, 2vw, 1rem);
             touch-action: none;
             transition: transform 0.1s, background 0.3s, border-color 0.3s;
         }
@@ -346,33 +352,39 @@
             box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 12px;
-            width: 80%;
-            max-width: 800px;
-            padding: 30px;
+            width: 90%;
+            max-width: 750px;
+            padding: 25px;
             text-align: center;
             position: relative;
         }
 
         .quiz-card h3 {
             color: var(--neon-blue);
-            margin-bottom: 20px;
-            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
         }
 
         .options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .option-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
             color: #fff;
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 2vw, 1.05rem);
             font-family: 'Tajawal', sans-serif;
             cursor: pointer;
             transition: all 0.3s;
@@ -395,21 +407,22 @@
             display: none;
             margin-top: 15px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
             color: var(--neon-gold);
             letter-spacing: 2px;
         }
 
         .transmission-box {
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.88);
             border: 1px solid var(--neon-green);
             box-shadow: 0 0 25px rgba(0, 255, 102, 0.2);
-            padding: 30px;
+            padding: 25px;
             border-radius: 8px;
-            max-width: 780px;
+            max-width: 750px;
+            width: 90%;
             text-align: right;
-            line-height: 2;
-            font-size: 1.25rem;
+            line-height: 1.8;
+            font-size: clamp(1rem, 2.2vw, 1.2rem);
             position: relative;
         }
 
@@ -417,7 +430,7 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--neon-green);
             background: rgba(0, 255, 102, 0.1);
             border: 1px solid var(--neon-green);
@@ -429,25 +442,28 @@
         .trans-header {
             font-family: 'Orbitron', sans-serif;
             color: var(--neon-green);
-            margin-bottom: 15px;
-            font-size: 1.2rem;
+            margin-bottom: 12px;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .choice-btns {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             justify-content: center;
-            margin-top: 25px;
+            margin-top: 20px;
+            flex-wrap: wrap;
         }
 
         .btn-choice {
-            padding: 12px 30px;
+            padding: 10px 25px;
             border-radius: 30px;
             border: none;
-            font-size: 1.1rem;
+            font-size: clamp(0.95rem, 2vw, 1.1rem);
             font-weight: bold;
             font-family: 'Tajawal', sans-serif;
             cursor: pointer;
@@ -464,9 +480,9 @@
             background: rgba(0, 243, 255, 0.1);
             border: 1px solid var(--neon-blue);
             color: var(--neon-blue);
-            padding: 10px 22px;
+            padding: 8px 18px;
             border-radius: 30px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-family: 'Tajawal', sans-serif;
             font-weight: bold;
             cursor: pointer;
@@ -487,9 +503,9 @@
             background: rgba(0, 255, 102, 0.2);
             border: 2px solid var(--neon-green);
             color: var(--neon-green);
-            padding: 10px 28px;
+            padding: 8px 24px;
             border-radius: 30px;
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             font-family: 'Tajawal', sans-serif;
             font-weight: bold;
             cursor: pointer;
@@ -511,13 +527,12 @@
             background: transparent;
             border: 2px solid var(--neon-blue);
             color: var(--neon-blue);
-            padding: 12px 35px;
-            font-size: 1.2rem;
+            padding: 10px 30px;
+            font-size: 1.1rem;
             font-family: 'Orbitron', 'Tajawal', sans-serif;
             cursor: pointer;
             border-radius: 5px;
             box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
-            margin-top: 25px;
             transition: all 0.3s;
         }
 
@@ -531,15 +546,14 @@
             background: rgba(0, 255, 102, 0.15);
             border: 2px solid var(--neon-green);
             color: var(--neon-green);
-            padding: 14px 40px;
-            font-size: 1.3rem;
+            padding: 12px 35px;
+            font-size: 1.2rem;
             font-family: 'Tajawal', 'Orbitron', sans-serif;
             font-weight: bold;
             border-radius: 40px;
             cursor: pointer;
             box-shadow: 0 0 20px rgba(0, 255, 102, 0.4);
             transition: all 0.3s ease;
-            margin-top: 25px;
             animation: pulse-green 1.5s infinite alternate;
         }
 
@@ -557,17 +571,18 @@
 
         .final-controls {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             justify-content: center;
-            margin-top: 25px;
+            margin-top: 20px;
+            flex-wrap: wrap;
         }
 
         .btn-restart {
             background: rgba(0, 255, 102, 0.2);
             border: 2px solid var(--neon-green);
             color: var(--neon-green);
-            padding: 12px 30px;
-            font-size: 1.2rem;
+            padding: 10px 25px;
+            font-size: 1.1rem;
             font-family: 'Tajawal', sans-serif;
             font-weight: bold;
             cursor: pointer;
@@ -587,8 +602,8 @@
             background: rgba(255, 0, 85, 0.2);
             border: 2px solid var(--neon-red);
             color: var(--neon-red);
-            padding: 12px 30px;
-            font-size: 1.2rem;
+            padding: 10px 25px;
+            font-size: 1.1rem;
             font-family: 'Tajawal', sans-serif;
             font-weight: bold;
             cursor: pointer;
@@ -609,8 +624,8 @@
             height: 100%;
             position: absolute;
             background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.9) 100%);
-            border: 15px solid rgba(20, 30, 50, 0.7);
-            border-radius: 20px;
+            border: 12px solid rgba(20, 30, 50, 0.7);
+            border-radius: 16px;
             pointer-events: none;
         }
 
@@ -625,8 +640,8 @@
 <div id="viewport">
 
     <div id="start-overlay">
-        <h1 style="color: var(--neon-blue); font-family: 'Orbitron'; font-size: 2rem;">MISSION SYSTEM INTERFACE</h1>
-        <p style="font-size: 1.2rem; color: #ccc;">اضغط على الزر أدناه لبدء المحاكاة</p>
+        <h1 style="color: var(--neon-blue); font-family: 'Orbitron'; font-size: clamp(1.5rem, 3.5vw, 2.2rem);">MISSION SYSTEM INTERFACE</h1>
+        <p style="font-size: clamp(1rem, 2vw, 1.2rem); color: #ccc;">اضغط على الزر أدناه لبدء المحاكاة المتوافقة مع جهازك</p>
         <button class="btn-start-exp" onclick="startSystemWithAudio()">بدء التجربة 🚀</button>
     </div>
 
@@ -668,17 +683,17 @@
             <div class="alert-box">
                 <h2 class="flash-text">🚨 SYSTEM ALERT 🚨</h2>
                 <p class="flash-subtext">ATMOSPHERE ERROR</p>
-                <p style="margin-top: 20px; color: #fff; font-size: 1.2rem; font-weight: bold;">تم اكتشاف اضطراب خطير في طبقات الغلاف الجوي للمركبة!</p>
-                <p style="margin-top: 10px; color: var(--neon-gold); font-size: 1rem;">اضغط على "متابعة الرحلة 🚀" لإصلاح الخلل وإعادة الترتيب</p>
+                <p style="margin-top: 15px; color: #fff; font-size: clamp(1rem, 2vw, 1.2rem); font-weight: bold;">تم اكتشاف اضطراب خطير في طبقات الغلاف الجوي للمركبة!</p>
+                <p style="margin-top: 10px; color: var(--neon-gold); font-size: clamp(0.9rem, 1.8vw, 1rem);">اضغط على "متابعة الرحلة 🚀" لإصلاح الخلل وإعادة الترتيب</p>
             </div>
         </div>
     </section>
 
-    <!-- SLIDE 2: ATMOSPHERE SORTING (مدعوم باللمس للأيباد) -->
+    <!-- SLIDE 2: ATMOSPHERE SORTING -->
     <section id="slide-2" class="slide">
         <canvas id="canvas-slide2" class="space-bg"></canvas>
-        <div class="content-layer" style="max-width: 950px; text-align: center;">
-            <h3 style="margin-bottom: 15px; font-size: 1.3rem;">🧪 التحدي: اسحب ورتّب طبقات الغلاف الجوي من سطح الأرض إلى الفضاء</h3>
+        <div class="content-layer" style="max-width: 950px; text-align: center; padding: 10px;">
+            <h3 style="margin-bottom: 12px; font-size: clamp(1rem, 2.2vw, 1.3rem);">🧪 التحدي: اسحب ورتّب طبقات الغلاف الجوي من سطح الأرض إلى الفضاء</h3>
             
             <div class="drop-zones" id="drop-zones">
                 <div class="drop-slot" data-index="0">1. القريبة للأرض</div>
@@ -696,10 +711,10 @@
                 <div class="draggable-item" id="layer-stratosphere">الستراتوسفير</div>
             </div>
 
-            <div style="margin-top: 25px;">
+            <div style="margin-top: 20px;">
                 <button class="btn-action" onclick="checkAtmosphereOrder()">التحقق من الترتيب 🧪</button>
             </div>
-            <div id="slide2-status" style="margin-top: 15px; font-weight: bold; height: 30px;"></div>
+            <div id="slide2-status" style="margin-top: 12px; font-weight: bold; height: 25px; font-size: 0.95rem;"></div>
         </div>
     </section>
 
@@ -710,15 +725,15 @@
             <div class="alert-box" id="chem-alert-screen">
                 <h2 class="flash-text">🚨 SYSTEM ALERT 🚨</h2>
                 <p class="flash-subtext">CHEMISTRY SYSTEM MALFUNCTION</p>
-                <p style="margin-top: 15px; color: var(--neon-gold); font-size: 1.3rem; font-weight: bold;">
+                <p style="margin-top: 15px; color: var(--neon-gold); font-size: 1.2rem; font-weight: bold;">
                     <span class="en-text">6 PROBLEMS DETECTED</span>
                 </p>
-                <p style="margin-top: 10px; color: #fff; font-size: 1.1rem; font-family: 'Orbitron';" class="en-text">SOLVE ALL PROBLEMS TO CONTINUE</p>
-                <p style="margin-top: 15px; color: var(--neon-blue); font-size: 0.95rem;">اضغط على "متابعة الرحلة 🚀" للبدء وحل المشكلات</p>
+                <p style="margin-top: 10px; color: #fff; font-size: 1rem; font-family: 'Orbitron';" class="en-text">SOLVE ALL PROBLEMS TO CONTINUE</p>
+                <p style="margin-top: 15px; color: var(--neon-blue); font-size: 0.9rem;">اضغط على "متابعة الرحلة 🚀" للبدء وحل المشكلات</p>
             </div>
 
             <div class="quiz-card hidden" id="quiz-card-box">
-                <div style="font-family: 'Orbitron'; color: var(--neon-red); font-size: 0.9rem; margin-bottom: 5px;">
+                <div style="font-family: 'Orbitron'; color: var(--neon-red); font-size: 0.85rem; margin-bottom: 5px;">
                     ⚠️ CHEMISTRY SYSTEM MALFUNCTION — <span id="solved-count">0</span>/6 SOLVED
                 </div>
                 
@@ -730,7 +745,7 @@
                     🔥 FUEL + OXIDIZER → COMBUSTION → HOT GASES → THRUST
                 </div>
 
-                <div id="quiz-feedback" style="margin-top: 15px; font-weight: bold; min-height: 25px;"></div>
+                <div id="quiz-feedback" style="margin-top: 12px; font-weight: bold; min-height: 25px; font-size: 0.95rem;"></div>
             </div>
         </div>
     </section>
@@ -742,8 +757,8 @@
         <div class="content-layer">
             
             <div id="launch-phase" style="text-align: center;">
-                <h1 class="text-neon" style="font-size: 2.5rem; margin-bottom: 20px;">LAUNCH SEQUENCE INITIATED</h1>
-                <div id="countdown-display" style="font-family: 'Orbitron'; font-size: 5rem; color: var(--neon-gold); font-weight: 900;">3</div>
+                <h1 class="text-neon" style="font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 15px;">LAUNCH SEQUENCE INITIATED</h1>
+                <div id="countdown-display" style="font-family: 'Orbitron'; font-size: clamp(4rem, 8vw, 6rem); color: var(--neon-gold); font-weight: 900;">3</div>
             </div>
 
             <div id="transmission-phase" class="hidden">
@@ -770,7 +785,7 @@
                     </div>
                     
                     <div id="trans-choice" style="margin-top: 15px; text-align: center;">
-                        <p style="margin-bottom: 15px; font-weight: bold;">هل ترغب في متابعة القصة؟</p>
+                        <p style="margin-bottom: 12px; font-weight: bold;">هل ترغب في متابعة القصة؟</p>
                         <div class="choice-btns">
                             <button class="btn-choice btn-yes" onclick="chooseStory(true)">🟢 نعم، أريد معرفة ما حدث.</button>
                             <button class="btn-choice btn-no" onclick="chooseStory(false)">🔴 لا، أريد إنهاء المهمة.</button>
@@ -787,7 +802,7 @@
         <canvas id="canvas-slide5" class="space-bg"></canvas>
         <div class="content-layer">
             
-            <div id="story-expansion" class="transmission-box hidden" style="margin-bottom: 20px;">
+            <div id="story-expansion" class="transmission-box hidden" style="margin-bottom: 15px;">
                 <div class="trans-header">
                     <span>📡 RADIO TRANSMISSION CONTINUED</span>
                     <span style="color: var(--neon-gold);">YEAR: 1961</span>
@@ -805,7 +820,7 @@
                     وَمُنْذُ تِلْكَ اللَّحْظَةِ… لَمْ يَعُدِ الفَضَاءُ حُلْمًا يُنْظَرُ إِلَيْهِ مِنَ الأَرْضِ، بَلْ طَرِيقًا يَسْتَطِيعُ الإِنْسَانُ أَنْ يَسْلُكَهُ.
                 </p>
 
-                <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
+                <div style="display: flex; gap: 12px; justify-content: center; margin-top: 15px; flex-wrap: wrap;">
                     <button class="btn-replay-story" onclick="playStoryPart2Audio()">🔄 إعادة استماع القصة</button>
                     <button class="btn-finish-mission" onclick="showFinalScreen('تمت المحاكاة وتجاوز كافة الاختبارات بنجاح!')">إكمال المهمة والختام 🏁</button>
                 </div>
@@ -816,9 +831,9 @@
             </div>
 
             <div id="final-screen" class="hidden" style="text-align: center; z-index: 101;">
-                <h1 style="color: var(--neon-green); font-size: 3rem; margin-bottom: 10px; font-family: 'Orbitron';" id="final-title">🚀 MISSION COMPLETE</h1>
-                <h2 style="font-size: 2rem; color: #fff; margin-bottom: 15px;">الكيمياء في الفضاء</h2>
-                <p style="color: var(--neon-blue); font-size: 1.2rem; margin-bottom: 20px;" id="final-desc">تمت المحاكاة وتجاوز كافة الاختبارات بنجاح!</p>
+                <h1 style="color: var(--neon-green); font-size: clamp(2.2rem, 5vw, 3rem); margin-bottom: 10px; font-family: 'Orbitron';" id="final-title">🚀 MISSION COMPLETE</h1>
+                <h2 style="font-size: clamp(1.5rem, 3vw, 2rem); color: #fff; margin-bottom: 12px;">الكيمياء في الفضاء</h2>
+                <p style="color: var(--neon-blue); font-size: clamp(1rem, 2vw, 1.2rem); margin-bottom: 20px;" id="final-desc">تمت المحاكاة وتجاوز كافة الاختبارات بنجاح!</p>
 
                 <div class="final-controls">
                     <button class="btn-restart" onclick="restartEntireProject()">إعادة البداية 🔄</button>
@@ -1323,7 +1338,6 @@
         }
     }
 
-    /* نظام السحب والإفلات التفاعلي المتوافق تماماً مع اللمس (الأيباد) والماوس */
     const correctAtmosphereOrder = [
         'layer-troposphere',
         'layer-stratosphere',
@@ -1691,7 +1705,6 @@
         } catch (e) {}
     }
 
-    /* رسم الخريطة الأرضية الثابتة مع القارات والصاروخ بدقة */
     function drawStationaryContinents(ctx, cx, cy, r) {
         ctx.save();
         ctx.beginPath();
@@ -1777,9 +1790,9 @@
                 if (s.alpha > 1) s.alpha = 1;
             });
 
-            const cx = canvas.width * 0.32;
-            const cy = canvas.height * 0.78;
-            const earthRadius = Math.min(canvas.width, canvas.height) * 0.35;
+            const cx = window.innerWidth <= 768 ? window.innerWidth * 0.5 : window.innerWidth * 0.32;
+            const cy = window.innerWidth <= 768 ? window.innerHeight * 0.55 : window.innerHeight * 0.78;
+            const earthRadius = Math.min(window.innerWidth, window.innerHeight) * 0.32;
 
             const layers = [
                 { nameEn: "Troposphere", nameAr: "التروبوسفير", r: earthRadius * 1.12, color: "rgba(0, 243, 255, 0.35)", alt: "12 km" },
