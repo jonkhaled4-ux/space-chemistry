@@ -329,14 +329,18 @@
             border: 1px solid var(--neon-blue);
             box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
             border-radius: 8px;
-            cursor: pointer;
+            cursor: grab;
             font-weight: bold;
             font-size: clamp(0.85rem, 2vw, 1rem);
             touch-action: none;
-            transition: transform 0.1s, background 0.3s, border-color 0.3s;
+            transition: background 0.3s, border-color 0.3s;
         }
 
-        .draggable-item.dragging-touch {
+        .draggable-item:active {
+            cursor: grabbing;
+        }
+
+        .draggable-item.dragging-pointer {
             position: fixed;
             z-index: 1000;
             pointer-events: none;
@@ -509,7 +513,6 @@
             font-family: 'Tajawal', sans-serif;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.3);
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
@@ -641,7 +644,7 @@
 
     <div id="start-overlay">
         <h1 style="color: var(--neon-blue); font-family: 'Orbitron'; font-size: clamp(1.5rem, 3.5vw, 2.2rem);">MISSION SYSTEM INTERFACE</h1>
-        <p style="font-size: clamp(1rem, 2vw, 1.2rem); color: #ccc;">اضغط على الزر أدناه لبدء المحاكاة المتوافقة مع جهازك</p>
+        <p style="font-size: clamp(1rem, 2vw, 1.2rem); color: #ccc;">اضغط على الزر أدناه لبدء المحاكاة</p>
         <button class="btn-start-exp" onclick="startSystemWithAudio()">بدء التجربة 🚀</button>
     </div>
 
@@ -689,7 +692,7 @@
         </div>
     </section>
 
-    <!-- SLIDE 2: ATMOSPHERE SORTING -->
+    <!-- SLIDE 2: ATMOSPHERE SORTING (متوافق تماماً مع اللاب توب والأيباد) -->
     <section id="slide-2" class="slide">
         <canvas id="canvas-slide2" class="space-bg"></canvas>
         <div class="content-layer" style="max-width: 950px; text-align: center; padding: 10px;">
@@ -1338,6 +1341,7 @@
         }
     }
 
+    /* نظام السحب والإفلات القياسي المعتمد على HTML5 (يعمل للاب توب والأيباد عبر محاكاة الحدث) */
     const correctAtmosphereOrder = [
         'layer-troposphere',
         'layer-stratosphere',
@@ -1346,80 +1350,55 @@
         'layer-exosphere'
     ];
 
-    function initTouchDragAndDrop() {
+    let draggedItem = null;
+
+    function initStandardDragAndDrop() {
         const items = document.querySelectorAll('.draggable-item');
         const slots = document.querySelectorAll('.drop-slot');
         const container = document.getElementById('drag-container');
 
         items.forEach(item => {
-            let activeTouch = null;
-            let clone = null;
+            item.setAttribute('draggable', 'true');
 
-            item.addEventListener('touchstart', (e) => {
+            item.addEventListener('dragstart', (e) => {
+                draggedItem = item;
+                e.dataTransfer.setData('text/plain', item.id);
+            });
+        });
+
+        slots.forEach(slot => {
+            slot.addEventListener('dragover', (e) => {
                 e.preventDefault();
-                activeTouch = e.targetTouches[0];
-                
-                clone = item.cloneNode(true);
-                clone.classList.add('dragging-touch');
-                document.body.appendChild(clone);
-                
-                updateClonePos(activeTouch);
-            }, { passive: false });
-
-            item.addEventListener('touchmove', (e) => {
-                if (!activeTouch || !clone) return;
-                e.preventDefault();
-                activeTouch = e.targetTouches[0];
-                updateClonePos(activeTouch);
-                highlightSlot(activeTouch);
-            }, { passive: false });
-
-            item.addEventListener('touchend', (e) => {
-                if (!activeTouch || !clone) return;
-                e.preventDefault();
-                
-                const dropTarget = getElementUnderTouch(activeTouch);
-                if (dropTarget && dropTarget.classList.contains('drop-slot')) {
-                    if (dropTarget.children.length > 0) {
-                        container.appendChild(dropTarget.children[0]);
-                    }
-                    dropTarget.appendChild(item);
-                }
-
-                clone.remove();
-                clone = null;
-                activeTouch = null;
-                clearHighlights();
+                slot.classList.add('hovered');
             });
 
-            function updateClonePos(touch) {
-                if (!clone) return;
-                clone.style.left = (touch.clientX - 60) + 'px';
-                clone.style.top = (touch.clientY - 25) + 'px';
-            }
+            slot.addEventListener('dragleave', () => {
+                slot.classList.remove('hovered');
+            });
 
-            function highlightSlot(touch) {
-                slots.forEach(slot => {
-                    const rect = slot.getBoundingClientRect();
-                    if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
-                        touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
-                        slot.classList.add('hovered');
-                    } else {
-                        slot.classList.remove('hovered');
+            slot.addEventListener('drop', (e) => {
+                e.preventDefault();
+                slot.classList.remove('hovered');
+                if (draggedItem) {
+                    if (slot.children.length > 0) {
+                        container.appendChild(slot.children[0]);
                     }
-                });
-            }
+                    slot.appendChild(draggedItem);
+                }
+            });
+        });
 
-            function getElementUnderTouch(touch) {
-                clone.style.display = 'none';
-                const elem = document.elementFromPoint(touch.clientX, touch.clientY);
-                clone.style.display = 'block';
-                return elem ? elem.closest('.drop-slot') : null;
-            }
-
-            function clearHighlights() {
-                slots.forEach(s => s.classList.remove('hovered'));
-            }
+        // دعم إضافي باللمس المباشر في حال لم يتعرف المتصفح على السحب القياسي
+        items.forEach(item => {
+            item.addEventListener('click', () => {
+                // ميزة مساعدة سريعة بالضغط: نقل العنصر تلقائياً لأول خانة فارغة
+                for (let slot of slots) {
+                    if (slot.children.length === 0) {
+                        slot.appendChild(item);
+                        break;
+                    }
+                }
+            });
         });
     }
 
@@ -2039,7 +2018,7 @@
     window.onload = () => {
         initEarthSimulation();
         initBackgrounds();
-        initTouchDragAndDrop();
+        initStandardDragAndDrop();
         if ('speechSynthesis' in window) {
             window.speechSynthesis.getVoices();
         }
