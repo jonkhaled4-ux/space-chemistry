@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>الكيمياء في الفضاء - تجربة تفاعلية سينمائية</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -21,6 +21,7 @@
             margin: 0;
             padding: 0;
             user-select: none;
+            -webkit-user-select: none;
         }
 
         body {
@@ -275,12 +276,14 @@
             to { box-shadow: 0 0 40px rgba(255, 0, 85, 0.9); border-color: var(--neon-red); }
         }
 
+        /* حاوية السحب والإفطار المتوافقة مع الأيباد */
         .drag-container {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             margin-top: 25px;
             flex-wrap: wrap;
             justify-content: center;
+            max-width: 900px;
         }
 
         .drop-zones {
@@ -288,40 +291,54 @@
             gap: 10px;
             margin-top: 20px;
             direction: ltr;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .drop-slot {
-            width: 150px;
-            height: 50px;
+            width: 140px;
+            height: 55px;
             border: 2px dashed var(--neon-blue);
             background: rgba(0, 243, 255, 0.05);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
             transition: all 0.3s;
+            text-align: center;
+            padding: 5px;
         }
 
         .drop-slot.hovered {
-            background: rgba(0, 243, 255, 0.2);
+            background: rgba(0, 243, 255, 0.25);
             border-style: solid;
+            border-color: var(--neon-green);
         }
 
         .draggable-item {
-            padding: 12px 20px;
-            background: rgba(15, 23, 42, 0.8);
+            padding: 12px 18px;
+            background: rgba(15, 23, 42, 0.95);
             border: 1px solid var(--neon-blue);
             box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
-            border-radius: 6px;
-            cursor: grab;
+            border-radius: 8px;
+            cursor: pointer;
             font-weight: bold;
-            transition: transform 0.2s, background 0.3s;
+            font-size: 1rem;
+            touch-action: none;
+            transition: transform 0.1s, background 0.3s, border-color 0.3s;
         }
 
-        .draggable-item:active { cursor: grabbing; }
-        .draggable-item.dragging { opacity: 0.4; }
+        .draggable-item.dragging-touch {
+            position: fixed;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0.85;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px var(--neon-blue);
+            border-color: var(--neon-green);
+        }
 
         .quiz-card {
             background: var(--panel-bg);
@@ -620,7 +637,7 @@
         </button>
     </div>
 
-    <!-- SLIDE 0: STATIONARY EARTH & ROCKET ASCENT -->
+    <!-- SLIDE 0 -->
     <section id="slide-0" class="slide active" style="padding: 0; width: 100%; height: 100%;">
         <canvas id="earth-simulation-canvas"></canvas>
         
@@ -644,7 +661,7 @@
         </div>
     </section>
 
-    <!-- SLIDE 1: SYSTEM ALERT -->
+    <!-- SLIDE 1 -->
     <section id="slide-1" class="slide">
         <canvas id="canvas-slide1" class="space-bg"></canvas>
         <div class="content-layer">
@@ -657,11 +674,11 @@
         </div>
     </section>
 
-    <!-- SLIDE 2: ATMOSPHERE SORTING -->
+    <!-- SLIDE 2: ATMOSPHERE SORTING (مدعوم باللمس للأيباد) -->
     <section id="slide-2" class="slide">
         <canvas id="canvas-slide2" class="space-bg"></canvas>
-        <div class="content-layer">
-            <h3 style="margin-bottom: 10px; font-size: 1.4rem;">🧪 التحدي: رتّب طبقات الغلاف الجوي من سطح الأرض إلى الفضاء</h3>
+        <div class="content-layer" style="max-width: 950px; text-align: center;">
+            <h3 style="margin-bottom: 15px; font-size: 1.3rem;">🧪 التحدي: اسحب ورتّب طبقات الغلاف الجوي من سطح الأرض إلى الفضاء</h3>
             
             <div class="drop-zones" id="drop-zones">
                 <div class="drop-slot" data-index="0">1. القريبة للأرض</div>
@@ -672,19 +689,21 @@
             </div>
 
             <div class="drag-container" id="drag-container">
-                <div class="draggable-item" draggable="true" id="layer-exosphere">الإكسوسفير</div>
-                <div class="draggable-item" draggable="true" id="layer-troposphere">التروبوسفير</div>
-                <div class="draggable-item" draggable="true" id="layer-thermosphere">الثرموسفير</div>
-                <div class="draggable-item" draggable="true" id="layer-mesosphere">الميزوسفير</div>
-                <div class="draggable-item" draggable="true" id="layer-stratosphere">الستراتوسفير</div>
+                <div class="draggable-item" id="layer-exosphere">الإكسوسفير</div>
+                <div class="draggable-item" id="layer-troposphere">التروبوسفير</div>
+                <div class="draggable-item" id="layer-thermosphere">الثرموسفير</div>
+                <div class="draggable-item" id="layer-mesosphere">الميزوسفير</div>
+                <div class="draggable-item" id="layer-stratosphere">الستراتوسفير</div>
             </div>
 
-            <button class="btn-action" onclick="checkAtmosphereOrder()">التحقق من الترتيب 🧪</button>
+            <div style="margin-top: 25px;">
+                <button class="btn-action" onclick="checkAtmosphereOrder()">التحقق من الترتيب 🧪</button>
+            </div>
             <div id="slide2-status" style="margin-top: 15px; font-weight: bold; height: 30px;"></div>
         </div>
     </section>
 
-    <!-- SLIDE 3: CHEMISTRY QUIZ -->
+    <!-- SLIDE 3 -->
     <section id="slide-3" class="slide">
         <canvas id="canvas-slide3" class="space-bg"></canvas>
         <div class="content-layer">
@@ -716,7 +735,7 @@
         </div>
     </section>
 
-    <!-- SLIDE 4: LAUNCH & STORY PART 1 -->
+    <!-- SLIDE 4 -->
     <section id="slide-4" class="slide">
         <canvas id="canvas-slide4" class="space-bg"></canvas>
         <div class="cockpit-view"></div>
@@ -763,7 +782,7 @@
         </div>
     </section>
 
-    <!-- SLIDE 5: STORY PART 2 & CONCLUSION -->
+    <!-- SLIDE 5 -->
     <section id="slide-5" class="slide">
         <canvas id="canvas-slide5" class="space-bg"></canvas>
         <div class="content-layer">
@@ -1304,6 +1323,7 @@
         }
     }
 
+    /* نظام السحب والإفلات التفاعلي المتوافق تماماً مع اللمس (الأيباد) والماوس */
     const correctAtmosphereOrder = [
         'layer-troposphere',
         'layer-stratosphere',
@@ -1312,40 +1332,82 @@
         'layer-exosphere'
     ];
 
-    let draggedItem = null;
+    function initTouchDragAndDrop() {
+        const items = document.querySelectorAll('.draggable-item');
+        const slots = document.querySelectorAll('.drop-slot');
+        const container = document.getElementById('drag-container');
 
-    document.querySelectorAll('.draggable-item').forEach(item => {
-        item.addEventListener('dragstart', (e) => {
-            draggedItem = item;
-            item.classList.add('dragging');
-        });
+        items.forEach(item => {
+            let activeTouch = null;
+            let clone = null;
 
-        item.addEventListener('dragend', () => {
-            item.classList.remove('dragging');
-        });
-    });
+            item.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                activeTouch = e.targetTouches[0];
+                
+                clone = item.cloneNode(true);
+                clone.classList.add('dragging-touch');
+                document.body.appendChild(clone);
+                
+                updateClonePos(activeTouch);
+            }, { passive: false });
 
-    document.querySelectorAll('.drop-slot').forEach(slot => {
-        slot.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            slot.classList.add('hovered');
-        });
+            item.addEventListener('touchmove', (e) => {
+                if (!activeTouch || !clone) return;
+                e.preventDefault();
+                activeTouch = e.targetTouches[0];
+                updateClonePos(activeTouch);
+                highlightSlot(activeTouch);
+            }, { passive: false });
 
-        slot.addEventListener('dragleave', () => {
-            slot.classList.remove('hovered');
-        });
-
-        slot.addEventListener('drop', (e) => {
-            e.preventDefault();
-            slot.classList.remove('hovered');
-            if (draggedItem) {
-                if(slot.children.length > 0) {
-                    document.getElementById('drag-container').appendChild(slot.children[0]);
+            item.addEventListener('touchend', (e) => {
+                if (!activeTouch || !clone) return;
+                e.preventDefault();
+                
+                const dropTarget = getElementUnderTouch(activeTouch);
+                if (dropTarget && dropTarget.classList.contains('drop-slot')) {
+                    if (dropTarget.children.length > 0) {
+                        container.appendChild(dropTarget.children[0]);
+                    }
+                    dropTarget.appendChild(item);
                 }
-                slot.appendChild(draggedItem);
+
+                clone.remove();
+                clone = null;
+                activeTouch = null;
+                clearHighlights();
+            });
+
+            function updateClonePos(touch) {
+                if (!clone) return;
+                clone.style.left = (touch.clientX - 60) + 'px';
+                clone.style.top = (touch.clientY - 25) + 'px';
+            }
+
+            function highlightSlot(touch) {
+                slots.forEach(slot => {
+                    const rect = slot.getBoundingClientRect();
+                    if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
+                        touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
+                        slot.classList.add('hovered');
+                    } else {
+                        slot.classList.remove('hovered');
+                    }
+                });
+            }
+
+            function getElementUnderTouch(touch) {
+                clone.style.display = 'none';
+                const elem = document.elementFromPoint(touch.clientX, touch.clientY);
+                clone.style.display = 'block';
+                return elem ? elem.closest('.drop-slot') : null;
+            }
+
+            function clearHighlights() {
+                slots.forEach(s => s.classList.remove('hovered'));
             }
         });
-    });
+    }
 
     function checkAtmosphereOrder() {
         const slots = document.querySelectorAll('.drop-slot');
@@ -1629,14 +1691,13 @@
         } catch (e) {}
     }
 
-    /* رسم القارات الثابتة بشكل دقيق ونظيف داخل كوكب الأرض */
+    /* رسم الخريطة الأرضية الثابتة مع القارات والصاروخ بدقة */
     function drawStationaryContinents(ctx, cx, cy, r) {
         ctx.save();
         ctx.beginPath();
         ctx.arc(cx, cy, r, 0, Math.PI * 2);
         ctx.clip();
 
-        // كتل قارية نظيفة وجميلة
         const fixedContinents = [
             { pts: [{x:-0.1, y:-0.32}, {x:0.18, y:-0.35}, {x:0.32, y:-0.16}, {x:0.25, y:0.16}, {x:0.08, y:0.45}, {x:-0.05, y:0.38}, {x:-0.15, y:0.12}, {x:-0.12, y:-0.15}] },
             { pts: [{x:-0.18, y:-0.65}, {x:0.22, y:-0.68}, {x:0.58, y:-0.52}, {x:0.78, y:-0.3}, {x:0.65, y:-0.12}, {x:0.4, y:-0.16}, {x:0.12, y:-0.3}, {x:-0.12, y:-0.36}] },
@@ -1662,7 +1723,6 @@
             ctx.stroke();
         });
 
-        // إضاءة المحيط ونقاء الجو
         const lightRim = ctx.createRadialGradient(
             cx - r * 0.3, cy - r * 0.3, r * 0.4,
             cx, cy, r
@@ -1704,7 +1764,6 @@
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // 1. الفضاء والنجوم
             ctx.fillStyle = '#030712';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -1722,7 +1781,6 @@
             const cy = canvas.height * 0.78;
             const earthRadius = Math.min(canvas.width, canvas.height) * 0.35;
 
-            // 2. طبقات الغلاف الجوي
             const layers = [
                 { nameEn: "Troposphere", nameAr: "التروبوسفير", r: earthRadius * 1.12, color: "rgba(0, 243, 255, 0.35)", alt: "12 km" },
                 { nameEn: "Stratosphere", nameAr: "الستراتوسفير", r: earthRadius * 1.28, color: "rgba(0, 180, 255, 0.25)", alt: "50 km" },
@@ -1749,7 +1807,6 @@
                 ctx.restore();
             }
 
-            // 3. المحيط الأزرق لكوكب الأرض
             const oceanGrad = ctx.createRadialGradient(
                 cx - earthRadius * 0.35, cy - earthRadius * 0.35, earthRadius * 0.05,
                 cx, cy, earthRadius
@@ -1766,10 +1823,8 @@
             ctx.fill();
             ctx.shadowBlur = 0;
 
-            // 4. رسم القارات الخضراء الثابتة بوضوح
             drawStationaryContinents(ctx, cx, cy, earthRadius);
 
-            // 5. مسار وحركة الصاروخ الفضائي
             rocketProgress += 0.0018;
             if (rocketProgress > 1.15) rocketProgress = 0.05;
 
@@ -1780,7 +1835,6 @@
 
             updateHUDByDistance(currentDist, earthRadius, layers);
 
-            // عادم المحرك الناري
             for (let p = 0; p < 3; p++) {
                 rocketParticles.push({
                     x: rx - Math.cos(rocketAngle) * 22 + (Math.random() - 0.5) * 4,
@@ -1816,7 +1870,6 @@
                 ctx.globalAlpha = 1;
             }
 
-            // 6. رسم الصاروخ الفضائي بدقة
             ctx.save();
             ctx.translate(rx, ry);
             ctx.rotate(rocketAngle + Math.PI / 2);
@@ -1973,6 +2026,7 @@
     window.onload = () => {
         initEarthSimulation();
         initBackgrounds();
+        initTouchDragAndDrop();
         if ('speechSynthesis' in window) {
             window.speechSynthesis.getVoices();
         }
